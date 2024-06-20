@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-geb$s8qjbym&1)=ubi(gk5x=3-&fcviba9t@t3+bgs4!7c%7_)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app','now.sh','127.0.0.1','localhost']
 
 
 # Application definition
@@ -147,6 +147,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 STRIPE_SECRET_KEY = 'sk_test_51MFEd6B0Q8xDu2xgBVTRJlkXqiOf4jRJuFgyUeH5GlANJaCtTH3j27k7YTw3Z83lMHBU035q2sUrzF81vzWcBG0Z00sxcvkGX8'
 
@@ -155,6 +157,7 @@ STRIPE_SECRET_KEY = 'sk_test_51MFEd6B0Q8xDu2xgBVTRJlkXqiOf4jRJuFgyUeH5GlANJaCtTH
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 # AUTH_USER_MODEL = 'backoffice.CustomUser'
 
