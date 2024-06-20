@@ -207,19 +207,18 @@ class CommandeProduitSerializer(serializers.ModelSerializer):
         instance.commande.save()
 
     def check_payment_and_status(self, commande):
-        paiement = Paiement.objects.get(commande=commande)
-        # Créer un paiement en attente si aucun paiement n'existe pour cette commande
-        if not paiement:
-            paiement = Paiement.objects.create(
-                commande=commande,
-                montant=commande.montant_total,  # Assurez-vous que montant_total est défini
-                methode_paiement='',  # Exemple de méthode, cela pourrait dépendre de la logique de votre application
-                statut_paiement='en_attente',
-                date_paiement=now()  # Fixer la date de création du paiement
-            )
+        # Récupérer un paiement existant ou en créer un nouveau si nécessaire
+        paiement, created = Paiement.objects.get_or_create(
+            commande=commande,
+            defaults={
+                'montant': commande.montant_total + commande.frais_livraison,  # Définir le montant total initial
+                'methode_paiement': '',  # Vous devrez spécifier une méthode par défaut ou la définir plus tard
+                'statut_paiement': 'en_attente',  # Définir le statut initial
+                'date_paiement': now()  # Fixer la date du paiement à l'instant actuel
+            }
+        )
         
         # Vérifie si un objet paiement existe et si les conditions de statut sont remplies
-        
         if paiement and (
             paiement.statut_paiement == 'paye' or
             commande.statut in ['prise_en_charge', 'en_cours_de_livraison', 'livree']):
