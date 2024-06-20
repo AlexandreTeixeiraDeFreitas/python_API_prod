@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_delete
@@ -40,6 +41,7 @@ class Produit(models.Model):
     type_produit = models.CharField(max_length=255, choices=[('plat', 'Plat'), ('dessert', 'Dessert'),('boissons', 'Boissons'),('pizza', 'Pizza')], default='plat', blank=True, null=True)
     image = models.ImageField(upload_to='produits/', blank=True, null=True)
     statut = models.CharField(max_length=20, choices=[('disponible', 'Disponible'), ('indisponible', 'Indisponible'),], default='disponible')
+    date_creation = models.DateTimeField(auto_now_add=True, verbose_name="Date de Création")
 
     def __str__(self):
         return self.nom_produit
