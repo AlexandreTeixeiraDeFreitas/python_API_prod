@@ -32,6 +32,8 @@ ALLOWED_HOSTS = [
     'python-api-prod.onrender.com'  # Votre domaine spécifique
 ]
 
+PORT = os.getenv('PORT', '10000')
+
 
 # Application definition
 
