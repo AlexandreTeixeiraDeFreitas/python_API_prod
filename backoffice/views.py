@@ -290,7 +290,7 @@ class CommandeViewSet(viewsets.ModelViewSet):
             if commande.livreur and commande.client.adresse:
                 # Supposons que get_coordinates et calculate_estimated_arrival_time sont des fonctions définies pour interagir avec une API ou calculer les coordonnées/temps
                 origin_coords = get_coordinates("14 Avenue de l'Europe 77144 Montévrain")
-                destination_coords = get_coordinates(commande.client.adresse.full_address())
+                destination_coords = get_coordinates(commande.client.adresse)
                 if origin_coords and destination_coords:
                     arrival_time = calculate_estimated_arrival_time(*origin_coords, *destination_coords)
                     serializer.validated_data['temps_estime_livraison'] = arrival_time
@@ -488,7 +488,7 @@ class CommandePaiementViewSet(CommandeViewSet, viewsets.ModelViewSet):
                 commande=commande,
                 defaults={'montant': commande.montant_total + commande.frais_livraison}
             )
-            if not created and paiement.statut_paiement == 'paye':
+            if not created and paiement.statut_paiement == 'payee':
                 return Response({'error': "Paiement déjà effectué."}, status=status.HTTP_400_BAD_REQUEST)
 
             # Calcul du montant à charger (centimes)
@@ -504,7 +504,7 @@ class CommandePaiementViewSet(CommandeViewSet, viewsets.ModelViewSet):
             # Mise à jour ou création du paiement
             paiement.payment_token = intent.id
             paiement.methode_paiement = 'stripe'
-            paiement.statut_paiement = 'en attente'
+            paiement.statut_paiement = 'en_attente'
             paiement.save()
 
             return Response({'client_secret': intent['client_secret']}, status=status.HTTP_201_CREATED)
@@ -522,7 +522,7 @@ class CommandePaiementViewSet(CommandeViewSet, viewsets.ModelViewSet):
 
             paiement = Paiement.objects.get(commande=commande)
 
-            if paiement.statut_paiement == 'paye':
+            if paiement.statut_paiement == 'payee':
                 return Response({'error': 'Paiement déjà vérifié.'}, status=status.HTTP_400_BAD_REQUEST)
 
             if not paiement.payment_token:
@@ -533,7 +533,7 @@ class CommandePaiementViewSet(CommandeViewSet, viewsets.ModelViewSet):
 
             # Mise à jour du statut de paiement selon le statut Stripe
             if intent.status == 'succeeded':
-                paiement.statut_paiement = 'paye'
+                paiement.statut_paiement = 'payee'
                 commande.statut = 'prise_en_charge'
                 paiement.save()
                 commande.save()

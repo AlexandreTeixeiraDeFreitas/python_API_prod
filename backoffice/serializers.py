@@ -219,6 +219,7 @@ class CommandeProduitSerializer(serializers.ModelSerializer):
         )
         
         # Vérifie si un objet paiement existe et si les conditions de statut sont remplies
+        
         if paiement and (
             paiement.statut_paiement == 'paye' or
             commande.statut in ['prise_en_charge', 'en_cours_de_livraison', 'livree']):
@@ -332,8 +333,19 @@ class CommandeSerializer(serializers.ModelSerializer):
             )
         if new_statut in ['prise_en_charge', 'en_cours_de_livraison', 'livree']:
             # Vérifier si le paiement de la commande a été effectué
-            if hasattr(instance, 'paiement') and instance.paiement:
-                if instance.paiement.statut_paiement != 'paye':
+            
+            
+            paiement, created = Paiement.objects.get_or_create(
+                commande=instance,
+                defaults={
+                    'montant': instance.montant_total + instance.frais_livraison,  # Définir le montant total initial
+                    'methode_paiement': '',  # Vous devrez spécifier une méthode par défaut ou la définir plus tard
+                    'statut_paiement': 'en_attente',  # Définir le statut initial
+                    'date_paiement': now()  # Fixer la date du paiement à l'instant actuel
+                }
+            )
+            if paiement:
+                if paiement.statut_paiement != 'payee':
                     raise ValidationError("Les transitions de statut vers 'prise en charge', 'en cours de livraison' ou 'livrée' sont uniquement autorisées si le paiement est confirmé comme 'payé'.")
             else:
                 # Si aucun objet paiement n'est associé, lever une erreur
