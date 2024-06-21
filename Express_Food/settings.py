@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve
 SECRET_KEY = "django-insecure-geb$s8qjbym&1)=ubi(gk5x=3-&fcviba9t@t3+bgs4!7c%7_)"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 PORT = os.getenv('PORT', '10000')
 
@@ -154,7 +154,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
+# STATIC_URL = "static/"
 
 STRIPE_SECRET_KEY = 'sk_test_51MFEQcEZ0N5FcY9bSn2ZvngxqzpearInM7PjuDeuBGMmR7QVQByRCwqkEc0SDo2xPmc9Gao1OdyOl9bvAucGWHxF00eD8IwFau'
 
