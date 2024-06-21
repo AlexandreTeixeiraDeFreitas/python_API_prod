@@ -200,7 +200,7 @@ CORS_ALLOW_METHODS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://openfoodfact-g2.onrender.com/',
+    'https://python-api-prod.onrender.com',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
