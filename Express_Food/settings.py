@@ -199,4 +199,8 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://openfoodfact-g2.onrender.com/',
+]
+
 CORS_ALLOW_CREDENTIALS = True
