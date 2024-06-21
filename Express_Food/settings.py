@@ -169,6 +169,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # CORS configuration
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
+    'https://front-express-food.onrender.com',
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
